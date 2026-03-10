@@ -1,0 +1,23 @@
+name: whisper
+
+services:
+  whisper-server:
+    build:
+      context: .
+      args:
+        WHISPER_CPP_VERSION: ${WHISPER_CPP_VERSION:-1.8.3}
+    environment:
+      WHISPER_MODEL: ${WHISPER_MODEL:-medium}
+      WHISPER_PORT: ${WHISPER_PORT:-8178}
+    ports:
+      - "${WHISPER_PORT:-8178}:${WHISPER_PORT:-8178}"
+    volumes:
+      - ./models:/app/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
