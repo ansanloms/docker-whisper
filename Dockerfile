@@ -15,8 +15,10 @@ curl -L -o whisper.cpp.tar.gz "https://github.com/ggml-org/whisper.cpp/archive/r
 tar xf whisper.cpp.tar.gz --strip-components=1
 rm whisper.cpp.tar.gz
 
+ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1
+
 cmake -B build -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="86"
-CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs cmake --build build -j$(nproc)
+LIBRARY_PATH=/usr/local/cuda/lib64/stubs cmake --build build -j$(nproc)
 EOF
 
 FROM nvidia/cuda:12.6.0-runtime-ubuntu24.04
