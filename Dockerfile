@@ -34,6 +34,13 @@ rm -rf /var/lib/apt/lists/*
 EOF
 
 COPY --from=build /app/build/bin/whisper-server /usr/local/bin/whisper-server
+COPY --from=build /app/build/src/libwhisper.so* /usr/local/lib/
+COPY --from=build /app/build/ggml/src/libggml.so* /usr/local/lib/
+COPY --from=build /app/build/ggml/src/libggml-base.so* /usr/local/lib/
+COPY --from=build /app/build/ggml/src/libggml-cpu.so* /usr/local/lib/
+COPY --from=build /app/build/ggml/src/ggml-cuda/libggml-cuda.so* /usr/local/lib/
+RUN ldconfig
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
